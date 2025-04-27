@@ -1,36 +1,43 @@
+@Library('jenkins-shared-Iibrary')
+
 pipeline {
     agent any
+    tools {
+        maven 'Maven'
+    }
 
     stages {
-        stage('Test') {
+        stage("init") {
             steps {
                 script {
-                    echo "Testing the application..."
-                    echo "Executing pipeline for branch ${BRANCH_NAME}" 
+                  gv = load "script.groovy"
                 }
             }
         }
 
-        stage('Build') {
-            when {
-                expression { BRANCH_NAME == 'main' } 
+        stage("build jar") {
             }
             steps {
                 script {
-                    echo "Building the application..."
+                    gv.buildjar()
                 }
             }
         }
 
-        stage('Deploy') {
-            when {
-                expression { BRANCH_NAME == 'main' }
-            }
+        stage("build image") {
             steps {
                 script {
-                    echo "Deploying the application..."
+                    gv.buildImage()
                 }
             }
         }
-    }
+
+        stage("deploy")
+            steps {
+                script {
+                    gv.deployApp()
+                }
+            }
+        }
+    }   
 }
