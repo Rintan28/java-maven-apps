@@ -6,14 +6,14 @@ pipeline {
             steps {
                 script {
                     echo "Testing the application..."
-                    echo "Executing pipeline for branch ${BRANCH_NAME}" 
+                    echo "Executing pipeline for branch ${BRANCH_NAME}"
                 }
             }
         }
 
         stage('Build') {
             when {
-                expression { BRANCH_NAME == 'main' } 
+                expression { BRANCH_NAME == 'main' }
             }
             steps {
                 script {
